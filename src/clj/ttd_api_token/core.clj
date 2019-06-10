@@ -52,35 +52,30 @@
   (start-app args))
 
 (defn cmdline [args]
-  ;; (println "Command line:")
   (if (= 2 (count args))
-    (let [password (first args)
-          delay (read-string (second args))]
-      (printf "%s : %s\n" password delay)
-      (ttd/debug)
-      (if (ttd/valid-password password)
-        (if (ttd/valid-delay delay)
-          (println (ttd/create-token))
-          (println "Invalid delay value. Must be a positive integer"))
-        (println "Invalid password"))
-      )
-    (println "Required: password delay")))
+    (let [delay (read-string (second args))]
+      (if (ttd/valid-delay delay)
+        (println (ttd/create-token))
+        (println "Invalid delay value. Must be a positive integer")))
+    (println "Missing required value for delay")))
 
 
 (defn usage []
   (println "Usage:\n
-password delay : Create token via the command line
--web           : Start web version
+-create <delay> : Create token with a delay value
+-webapp         : Start web version
 \n"))
 
 (defn -main [& args]
   (if args
-    ;; if --web then start-app
-    (if (= "-web" (first args))
-      (start-web args)
-      ;; else support command line
-      ;; password [delay]
-      (cmdline args))
-    (usage)
-    )
-  )
+    (let [flag (first args)]
+      ;; if --webapp then start-app
+      (if (or (= "--webapp" flag) (= "-w" flag))
+        (start-web args)
+        ;; else support command line
+        (if (or (= "--create" flag) (= "-c" flag))
+          (cmdline args)
+          (usage))))
+    (usage)))
+
+
