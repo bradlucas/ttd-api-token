@@ -1,5 +1,6 @@
 (ns ttd-api-token.ttd
   (:require [clojure.edn :as edn]
+            [clj-http.client :as http]
             [environ.core :refer [env]]))
 
 
@@ -41,8 +42,49 @@
 (defn password []
   (:password (load-config)))
 
-
 (defn debug []
   (println (root-url))
   (println (username))
   (println (password)))
+
+
+
+(defn build-url [root-url path]
+  (let [s (str root-url path)]
+    s))
+
+
+(defn build-authentication-body [login password token-expiration-in-minutes]
+  ;; {
+  ;; "Login": "sample string 1",
+  ;; "Password": "sample string 2",
+  ;; "TokenExpirationInMinutes": 1
+  ;; }
+  (let [m {:body (str "{\"Login\": \"" login "\"," "\"Password\": \"" password "\"," "\"TokenExpirationInMinutes\": " token-expiration-in-minutes "}")
+           :content-type :json
+           :accept :json}]
+    m))
+
+                                 
+(defn get-token [root-url username password delay]
+  (-> (build-url root-url "authentication")
+      (http/post (build-authentication-body username password delay))
+      :body))
+
+
+(defn create-token []
+  (let [{:keys [root-url username password]} (load-config)]
+    ;; (println root-url)
+    ;; (println username)
+    ;; (println password))
+
+    (println (get-token root-url username password 1))
+  ))
+  
+
+
+
+  ;; {
+  ;; "Token": "sample string 1"
+  ;; }
+

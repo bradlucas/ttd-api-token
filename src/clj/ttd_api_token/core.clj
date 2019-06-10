@@ -58,6 +58,7 @@
           delay (second args)]
       (printf "%s : %s\n" password delay)
       (ttd/debug)
+      (ttd/create-token)
       )
     (println "Required: password delay")))
 
