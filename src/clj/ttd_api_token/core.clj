@@ -52,13 +52,17 @@
   (start-app args))
 
 (defn cmdline [args]
-  (println "Command line:")
+  ;; (println "Command line:")
   (if (= 2 (count args))
     (let [password (first args)
-          delay (second args)]
+          delay (read-string (second args))]
       (printf "%s : %s\n" password delay)
       (ttd/debug)
-      (ttd/create-token)
+      (if (ttd/valid-password password)
+        (if (ttd/valid-delay delay)
+          (println (ttd/create-token))
+          (println "Invalid delay value. Must be a positive integer"))
+        (println "Invalid password"))
       )
     (println "Required: password delay")))
 

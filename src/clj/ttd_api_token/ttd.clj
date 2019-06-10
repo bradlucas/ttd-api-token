@@ -1,8 +1,9 @@
 (ns ttd-api-token.ttd
-  (:require [clojure.edn :as edn]
+  (:require [cheshire.core :as c]
+            [clojure.walk :as w]
+            [clojure.edn :as edn]
             [clj-http.client :as http]
             [environ.core :refer [env]]))
-
 
 
 ;; ----------------------------------------------------------------------------------------------------
@@ -14,7 +15,6 @@
   {:root-url (env :ttd-api-token-root-url)
    :username (env :ttd-api-token-username)
    :password (env :ttd-api-token-password)})
-
 
 ;; ----------------------------------------------------------------------------------------------------
 ;; Create a edn file called config.edn inside a directory called .ttd-api in your $HOME directory
@@ -36,23 +36,24 @@
 (defn root-url []
   (:root-url (load-config)))
 
-(defn username []
-  (:username (load-config)))
+;; (defn username []
+;;   (:username (load-config)))
 
-(defn password []
-  (:password (load-config)))
+;; (defn password []
+;;   (:password (load-config)))
 
 (defn debug []
-  (println (root-url))
-  (println (username))
-  (println (password)))
+  (println (load-config)))
 
+(defn valid-password [password]
+  (= password (:password (load-config))))
 
+(defn valid-delay [delay]
+  (pos-int? delay))
 
 (defn build-url [root-url path]
   (let [s (str root-url path)]
     s))
-
 
 (defn build-authentication-body [login password token-expiration-in-minutes]
   ;; {
@@ -64,27 +65,16 @@
            :content-type :json
            :accept :json}]
     m))
-
-                                 
+                                
 (defn get-token [root-url username password delay]
   (-> (build-url root-url "authentication")
       (http/post (build-authentication-body username password delay))
-      :body))
-
+      :body
+      c/decode
+      w/keywordize-keys
+      ))
 
 (defn create-token []
   (let [{:keys [root-url username password]} (load-config)]
-    ;; (println root-url)
-    ;; (println username)
-    ;; (println password))
-
-    (println (get-token root-url username password 1))
-  ))
+    (:Token (get-token root-url username password 1))))
   
-
-
-
-  ;; {
-  ;; "Token": "sample string 1"
-  ;; }
-

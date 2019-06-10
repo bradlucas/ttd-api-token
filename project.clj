@@ -27,6 +27,7 @@
                  [ring/ring-defaults "0.3.2"]
                  [selmer "1.12.12"]
 
+                 [cheshire "5.8.1"]
                  [clj-http "3.10.0"]
                  [environ "1.1.0"]]
 
