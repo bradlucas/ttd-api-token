@@ -74,7 +74,7 @@
       w/keywordize-keys
       ))
 
-(defn create-token []
+(defn create-token [delay]
   (let [{:keys [root-url username password]} (load-config)]
-    (:Token (get-token root-url username password 1))))
+    (:Token (get-token root-url username password delay))))
   

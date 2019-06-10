@@ -55,7 +55,7 @@
   (if (= 2 (count args))
     (let [delay (read-string (second args))]
       (if (ttd/valid-delay delay)
-        (println (ttd/create-token))
+        (println (ttd/create-token delay))
         (println "Invalid delay value. Must be a positive integer")))
     (println "Missing required value for delay")))
 

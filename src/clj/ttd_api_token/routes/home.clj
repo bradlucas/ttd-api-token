@@ -21,7 +21,7 @@
     {:error "Invalid password"}
     (if (not (ttd/valid-delay delay))
       {:error "Invalid delay value. Must be non-negative integer"}
-      {:token (ttd/create-token)})))
+      {:token (ttd/create-token delay)})))
 
 (defn create-page [{:keys [params]:as request}]
   (println "--------------------------------------------------")
@@ -32,6 +32,7 @@
           m2 (merge params)]
       (clojure.pprint/pprint m2)
       (layout/render request "result.html" (merge m {:params params
+                                                     :delay delay
                                                      :debug-str (with-out-str (clojure.pprint/pprint m2))})))))
   
 (defn home-routes []
