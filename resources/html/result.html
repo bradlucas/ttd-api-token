@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Result</h1>
+<br/>
+
+{% if token %}
+  <div class="content">
+    Token: <pre>{{token}}</pre>
+  </div>
+  {% endif %}
+
+{% if error %}
+  <div class="content">
+    Error: {{error}}
+  </div>
+  {% endif %}
+  
+{% endblock %}

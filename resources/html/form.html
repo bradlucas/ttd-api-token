@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content">
+    <form method="POST" action="/">
+        {% csrf-field %}
+        <p>
+          Password:
+          <input class="input" type="password" name="password" value="{{password}}" />
+        </p>
+        {% if errors.password %}
+        <div class="notification is-danger">{{errors.delay|join}}</div>
+        {% endif %}
+        <p>
+          Delay:
+          <input class="input input-sm" maxlength="3" type="text" name="delay" value="{{delay}}" />
+        </p>
+        {% if errors.delay %}
+        <div class="notification is-danger">{{errors.delay|join}}</div>
+        {% endif %}
+        <input type="submit" class="button is-primary" value="Create Token" />
+    </form>
+    
+  </div>
+{% endblock %}
