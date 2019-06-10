@@ -46,5 +46,33 @@
     (log/info component "started"))
   (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
 
-(defn -main [& args]
+
+(defn start-web [args]
   (start-app args))
+
+(defn cmdline [args]
+  (println "Command line:")
+  (if (= 2 (count args))
+    (let [password (first args)
+          delay (second args)]
+      (printf "%s : %s\n" password delay))
+    (println "Required: password delay")))
+
+
+(defn usage []
+  (println "Usage:\n
+password delay : Create token via the command line
+-web           : Start web version
+\n"))
+
+(defn -main [& args]
+  (if args
+    ;; if --web then start-app
+    (if (= "-web" (first args))
+      (start-web args)
+      ;; else support command line
+      ;; password [delay]
+      (cmdline args))
+    (usage)
+    )
+  )
