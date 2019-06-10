@@ -6,7 +6,8 @@
     [ttd-api-token.config :refer [env]]
     [clojure.tools.cli :refer [parse-opts]]
     [clojure.tools.logging :as log]
-    [mount.core :as mount])
+    [mount.core :as mount]
+    [ttd-api-token.ttd :as ttd])
   (:gen-class))
 
 (def cli-options
@@ -55,7 +56,9 @@
   (if (= 2 (count args))
     (let [password (first args)
           delay (second args)]
-      (printf "%s : %s\n" password delay))
+      (printf "%s : %s\n" password delay)
+      (ttd/debug)
+      )
     (println "Required: password delay")))
 
 
