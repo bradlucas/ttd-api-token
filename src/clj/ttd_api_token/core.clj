@@ -62,8 +62,8 @@
 
 (defn usage []
   (println "Usage:\n
--create <delay> : Create token with a delay value
--webapp         : Start web version
+-c, --create <delay> : Create token with a delay value
+-w, --webapp         : Start web version
 \n"))
 
 (defn -main [& args]
