@@ -49,21 +49,32 @@
   (= password (:password (load-config))))
 
 (defn valid-delay [delay]
-  (pos-int? delay))
+  (or (pos-int? delay) (zero? 0)))
 
 (defn build-url [root-url path]
   (let [s (str root-url path)]
     s))
 
-(defn build-authentication-body [login password token-expiration-in-minutes]
+(defn build-authentication-body-ex [login password token-expiration-in-minutes]
   ;; {
   ;; "Login": "sample string 1",
   ;; "Password": "sample string 2",
   ;; "TokenExpirationInMinutes": 1
   ;; }
-  (let [m {:body (str "{\"Login\": \"" login "\"," "\"Password\": \"" password "\"," "\"TokenExpirationInMinutes\": " token-expiration-in-minutes "}")
+
+
+  ;; {
+  ;; "Login": "sample string 1",
+  ;; "Password": "sample string 2"
+  ;; }
+
+  (str "{\"Login\": \"" login "\"," "\"Password\": \"" password  "\"" (if (< 0 token-expiration-in-minutes) (str "," "\"TokenExpirationInMinutes\": " token-expiration-in-minutes)) "}"))
+
+(defn build-authentication-body [login password token-expiration-in-minutes]
+  (let [m {:body (build-authentication-body-ex login password token-expiration-in-minutes)
            :content-type :json
            :accept :json}]
+    ;; (clojure.pprint/pprint m)
     m))
                                 
 (defn get-token [root-url username password delay]

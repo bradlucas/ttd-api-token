@@ -14,6 +14,7 @@
           Delay:
           <input class="input input-sm" maxlength="3" type="text" name="delay" value="{{delay}}" />
         </p>
+        <p>Enter 0 for infinite token</p>
         {% if errors.delay %}
         <div class="notification is-danger">{{errors.delay|join}}</div>
         {% endif %}

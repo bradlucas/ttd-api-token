@@ -62,7 +62,7 @@
 
 (defn usage []
   (println "Usage:\n
--c, --create <delay> : Create token with a delay value
+-c, --create <delay> : Create token with a delay value (enter 0 for infinite token)
 -w, --webapp         : Start web version
 \n"))
 
